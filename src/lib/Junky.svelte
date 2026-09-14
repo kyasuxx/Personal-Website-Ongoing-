@@ -1,84 +1,86 @@
-
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import { projects, CarouselController } from './logics/projects';
-  import './logics/projects.css';
+  import { projects } from './logics/projects';
 
-  let carouselElement: HTMLDivElement;
-  const controller = new CarouselController();
+  let activeIndex = 0;
 
-  onMount(() => {
-    if (carouselElement) {
-      controller.bind(carouselElement);
-    }
-  });
+  function select(i: number) {
+    activeIndex = i;
+  }
 </script>
 
-<section id="projects" class="min-h-screen flex flex-col justify-center p-4 md:p-8 max-w-7xl mx-auto overflow-hidden">
+<section id="projects" class="min-h-screen flex flex-col justify-center p-4 md:p-8 max-w-6xl mx-auto">
 
-  <div class="mb-8 px-4">
+  <div class="mb-10 px-4">
     <h2 class="text-5xl md:text-7xl font-bold text-white font-['Supermercado_One',sans-serif]">
       projects.
     </h2>
-    <p class="text-xs md:text-sm uppercase tracking-widest text-gray-400 font-manrope mt-6">
+    <p class="text-xs md:text-sm text-gray-400 font-manrope mt-3">
       Projects I have worked on throughout my academic journey
     </p>
   </div>
 
-  <div
-    bind:this={carouselElement}
-    on:mousedown={controller.handleMouseDown}
-    on:mouseleave={controller.handleMouseLeave}
-    on:mouseup={controller.handleMouseUp}
-    on:mousemove={controller.handleMouseMove}
-    role="region"
-    aria-label="Projects showcase carousel"
-    class="carousel-track"
-  >
-    {#each projects as project}
-      <div class="project-card border border-white/20 rounded-3xl p-6 bg-black/20 backdrop-blur-sm shadow-2xl flex flex-col justify-between hover:border-white/40 hover:-translate-y-1 transition-all duration-300">
+  <div class="grid grid-cols-1 md:grid-cols-[320px_1fr] gap-8 px-4 items-start">
 
-        <div class="w-full h-48 rounded-2xl overflow-hidden bg-white/5 border border-white/10 mb-6 flex items-center justify-center">
-          {#if project.isVideo}
+    <ul role="listbox" aria-label="Project list" class="flex flex-col border-t border-white/10">
+      {#each projects as project, i}
+        <li>
+          <button
+            type="button"
+            role="option"
+            aria-selected={i === activeIndex}
+            on:click={() => select(i)}
+            on:mouseenter={() => select(i)}
+            class="w-full text-left flex flex-col gap-1 py-4 pl-4 pr-2 border-b border-white/10 border-l-2 transition-colors duration-200
+              {i === activeIndex
+                ? 'border-l-[#8B6FF0] bg-[#8B6FF0]/[0.06]'
+                : 'border-l-transparent hover:bg-white/[0.03]'}"
+          >
+            <span class="font-manrope text-base font-semibold {i === activeIndex ? 'text-orange-500' : 'text-gray-200'}">
+              {project.title}
+            </span>
+            <span class="font-manrope text-xs text-gray-500">
+              {project.subtitle}
+            </span>
+          </button>
+        </li>
+      {/each}
+    </ul>
+
+    <div class="flex flex-col">
+      {#key activeIndex}
+        <div class="w-full aspect-video overflow-hidden bg-white/[0.03] border border-white/10">
+          {#if projects[activeIndex].isVideo}
             <video
-              src={project.media}
+              src={projects[activeIndex].media}
               autoplay
               loop
               muted
               playsinline
-              class="w-full h-full object-cover pointer-events-none"
+              class="w-full h-full object-cover"
             ></video>
           {:else}
             <img
-              src={project.media}
-              alt={project.title}
-              class="w-full h-full object-cover pointer-events-none"
+              src={projects[activeIndex].media}
+              alt={projects[activeIndex].title}
+              class="w-full h-full object-cover"
             />
           {/if}
         </div>
 
-        <div class="flex-1 flex flex-col justify-between">
-          <div>
-            <h3 class="text-2xl font-bold text-white font-['Supermercado_One',sans-serif] leading-tight mb-1">
-              {project.title}
-            </h3>
-            <p class="text-xs text-[#E9D5FF] font-manrope mb-3">{project.subtitle}</p>
-            <p class="text-xs md:text-sm text-gray-300 font-manrope leading-relaxed line-clamp-3 mb-6">
-              {project.description}
-            </p>
-          </div>
+        <p class="font-manrope text-sm leading-relaxed text-gray-300 max-w-[60ch] mt-5">
+          {projects[activeIndex].description}
+        </p>
 
-          <div class="flex flex-wrap gap-2 pt-4 border-t border-white/10">
-            {#each project.tags as tag}
-              <span class="px-2.5 py-1 rounded-full text-[10px] font-manrope bg-[#1E1035] text-[#E9D5FF] border border-[#3B185F]">
-                #{tag}
-              </span>
-            {/each}
-          </div>
+        <div class="flex flex-wrap gap-2 mt-5">
+          {#each projects[activeIndex].tags as tag}
+            <span class="font-manrope text-[10px] text-[#C4B5FD] border border-[#8B6FF0]/35 px-2.5 py-1">
+              #{tag}
+            </span>
+          {/each}
         </div>
+      {/key}
+    </div>
 
-      </div>
-    {/each}
   </div>
 
 </section>

@@ -25,7 +25,7 @@ export const projects: Project[] = [
     isVideo: true
   },
   {
-    title: "SocialEyes",
+    title: "SocialEyes | YUNA",
     subtitle: "YouTube Channel Content Analyzer",
     description: "Comprehensive web tool analyzing YouTube video content and comment sections using Natural Language Processing for sentiment reports.",
     tags: ["Python", "Flask", "NLP"],
@@ -41,37 +41,3 @@ export const projects: Project[] = [
     isVideo: false
   }
 ];
-
-export class CarouselController {
-  private carousel: HTMLDivElement | null = null;
-  private isDragging: boolean = false;
-  private startX: number = 0;
-  private scrollLeft: number = 0;
-
-  public bind(element: HTMLDivElement) {
-    this.carousel = element;
-  }
-
-  public handleMouseDown = (e: MouseEvent) => {
-    if (!this.carousel) return;
-    this.isDragging = true;
-    this.startX = e.pageX - this.carousel.offsetLeft;
-    this.scrollLeft = this.carousel.scrollLeft;
-  };
-
-  public handleMouseLeave = () => {
-    this.isDragging = false;
-  };
-
-  public handleMouseUp = () => {
-    this.isDragging = false;
-  };
-
-  public handleMouseMove = (e: MouseEvent) => {
-    if (!this.isDragging || !this.carousel) return;
-    e.preventDefault();
-    const x = e.pageX - this.carousel.offsetLeft;
-    const dragDistance = (x - this.startX) * 1.5;
-    this.carousel.scrollLeft = this.scrollLeft - dragDistance;
-  };
-}
