@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+html, body, #app {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+}
+
+@layer base {
+  :root {
+    /* Backgrounds & Glass Containers */
+    --color-bg-main: #0A0512;
+    --color-bg-glass: rgba(18, 10, 33, 0.3);
+    --color-border-glass: rgba(255, 255, 255, 0.2);
+    --color-border-subtle: rgba(255, 255, 255, 0.1);
+
+    /* Typography */
+    --color-text-heading: #FFFFFF;
+    --color-text-sub: #F1F5F9;
+    --color-text-body: #CBD5E1;
+    --color-text-muted: #94A3B8;
+
+    /* Buttons */
+    --color-btn-start: #6A0DAD;
+    --color-btn-end: #9B30FF;
+    --color-btn-glow: #7F00FF;
+    --color-btn-glow-hover: #FF1493;
+    --color-btn-text: #FFFFFF;
+
+    /* Badges & Tags */
+    --color-badge-bg: #1E1035;
+    --color-badge-text: #E9D5FF;
+    --color-badge-border: #3B185F;
+  }
+}
+
+@layer components {
+  .badge-item {
+    @apply px-3 py-1 rounded-full bg-white/10 border border-white/10 text-[var(--color-badge-text)] border-[var(--color-badge-border)];
+  }
+}
+
+@theme {
+  --font-manrope: "Manrope", sans-serif;
+  --font-nunito: "Nunito Sans", sans-serif;
+}
